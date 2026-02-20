@@ -49,7 +49,7 @@ async function cargarVideos() {
                 <div class="card-meta">
                     <span class="label">REPLAY HD</span>
                     <div style="color: var(--text-dim); font-size: 0.7rem; display: flex; align-items: center; gap: 4px;">
-                        <i data-lucide="clock" style="width:12px"></i>
+                        <i data-lucide="clock" style="width:12px"></i> ANALIZADO
                     </div>
                 </div>
                 <span class="date-text">${fechaFormateada}</span>
@@ -62,9 +62,8 @@ async function cargarVideos() {
         galeria.appendChild(card);
     });
 
+    // Indispensable para que se vean los iconos en las tarjetas nuevas
     lucide.createIcons();
 }
 
 cargarVideos();
-
-
