@@ -49,13 +49,13 @@ async function cargarVideos() {
                 <div class="card-meta">
                     <span class="label">REPLAY HD</span>
                     <div style="color: var(--text-dim); font-size: 0.7rem; display: flex; align-items: center; gap: 4px;">
-                        <i data-lucide="clock" style="width:12px"></i> ANALIZADO
+                        <i data-lucide="clock" style="width:12px"></i>
                     </div>
                 </div>
                 <span class="date-text">${fechaFormateada}</span>
                 <a href="${videoUrl}" download="${clip.nombre}" class="btn-action">
                     <i data-lucide="download" style="width:16px"></i>
-                    DESCARGAR ANÁLISIS
+                    DESCARGAR VIDEO
                 </a>
             </div>
         `;
@@ -66,3 +66,4 @@ async function cargarVideos() {
 }
 
 cargarVideos();
+
