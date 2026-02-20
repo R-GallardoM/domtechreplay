@@ -1,3 +1,4 @@
+// --- CONFIGURACIÓN DOMTECH REPLAY ---
 const SUPABASE_URL = "https://gxgqgqcwgsmsxlnxsrcj.supabase.co"; 
 const SUPABASE_KEY = "sb_publishable_P7eGeU0cO6luraeKLmExDQ_Lb9OXOOT";
 const R2_PUBLIC_URL = "https://pub-30d153c22f29479a9e01afad5b2ed5f9.r2.dev"; 
@@ -13,40 +14,59 @@ async function cargarVideos() {
         .order('created_at', { ascending: false });
 
     if (error || !data) {
-        galeria.innerHTML = "<p>Error de sincronización.</p>";
+        console.error("Error:", error);
+        galeria.innerHTML = "<div id='loader'>ERROR DE SINCRONIZACIÓN</div>";
+        return;
+    }
+
+    if (data.length === 0) {
+        galeria.innerHTML = "<div id='loader'>BIBLIOTECA VACÍA</div>";
         return;
     }
 
     galeria.innerHTML = ""; 
 
-    data.forEach((clip, index) => {
+    data.forEach((clip) => {
         const videoUrl = `${R2_PUBLIC_URL}/${clip.nombre}`;
-        const fecha = new Date(clip.created_at);
-        const fechaFormateada = fecha.toLocaleString('es-MX', { 
-            day: '2-digit', month: 'long', hour: '2-digit', minute: '2-digit' 
+        const fechaOriginal = new Date(clip.created_at);
+        
+        // Formato profesional: 20 FEB, 09:30 AM
+        const fechaFormateada = fechaOriginal.toLocaleString('es-MX', { 
+            day: '2-digit', 
+            month: 'short', 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
         }).toUpperCase();
 
         const card = document.createElement('div');
         card.className = 'card';
-        // Esto hace que las tarjetas aparezcan una por una
-        card.style.animationDelay = `${index * 0.1}s`; 
         
         card.innerHTML = `
             <div class="video-wrapper">
-                <video preload="metadata" playsinline loop muted onmouseover="this.play()" onmouseout="this.pause()">
-                    <source src="${videoUrl}" type="video/mp4">
-                </video>
+                <div class="play-hint"><i data-lucide="play" fill="white"></i></div>
+                <div class="video-overlay"></div>
+                <video src="${videoUrl}" preload="metadata" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
             </div>
             <div class="card-info">
-                <span class="label">Match Highlight</span>
+                <div class="card-meta">
+                    <span class="label">REPLAY HD</span>
+                    <div style="color: var(--text-dim); font-size: 0.7rem; display: flex; align-items: center; gap: 4px;">
+                        <i data-lucide="clock" style="width:12px"></i> ANALIZADO
+                    </div>
+                </div>
                 <span class="date-text">${fechaFormateada}</span>
-                <a href="${videoUrl}" class="btn-action" target="_blank" download>
-                    GUARDAR CLIP
+                <a href="${videoUrl}" download="${clip.nombre}" class="btn-action">
+                    <i data-lucide="download" style="width:16px"></i>
+                    DESCARGAR ANÁLISIS
                 </a>
             </div>
         `;
         galeria.appendChild(card);
     });
+
+    // Esta línea es VITAL para que aparezcan los iconos de Lucide en las nuevas tarjetas
+    lucide.createIcons();
 }
 
 cargarVideos();
