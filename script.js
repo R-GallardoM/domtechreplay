@@ -30,7 +30,6 @@ async function cargarVideos() {
         const videoUrl = `${R2_PUBLIC_URL}/${clip.nombre}`;
         const fechaOriginal = new Date(clip.created_at);
         
-        // Formato profesional: 20 FEB, 09:30 AM
         const fechaFormateada = fechaOriginal.toLocaleString('es-MX', { 
             day: '2-digit', 
             month: 'short', 
@@ -44,9 +43,7 @@ async function cargarVideos() {
         
         card.innerHTML = `
             <div class="video-wrapper">
-                <div class="play-hint"><i data-lucide="play" fill="white"></i></div>
-                <div class="video-overlay"></div>
-                <video src="${videoUrl}" preload="metadata" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
+                <video src="${videoUrl}" preload="metadata" controls playsinline></video>
             </div>
             <div class="card-info">
                 <div class="card-meta">
@@ -65,7 +62,6 @@ async function cargarVideos() {
         galeria.appendChild(card);
     });
 
-    // Esta línea es VITAL para que aparezcan los iconos de Lucide en las nuevas tarjetas
     lucide.createIcons();
 }
 
