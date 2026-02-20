@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Domtech Replay</title>
-    <!-- SDKs -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
@@ -48,7 +46,7 @@
                 radial-gradient(circle at 100% 100%, rgba(0, 255, 136, 0.03) 0%, transparent 40%);
         }
 
-        /* Barra de Navegación / Top Bar */
+        /* Barra de Navegación */
         nav {
             height: 70px;
             border-bottom: 1px solid var(--border);
@@ -141,7 +139,7 @@
             gap: 24px;
         }
 
-        /* Mejora Visual de las Tarjetas */
+        /* Tarjetas */
         .card {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -159,7 +157,6 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         }
 
-        /* Overlay de Video */
         .video-wrapper {
             position: relative;
             width: 100%;
@@ -168,48 +165,13 @@
             overflow: hidden;
         }
 
-        .video-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.8));
-            pointer-events: none;
-            z-index: 2;
-        }
-
         video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1);
+            object-fit: contain;
+            display: block;
         }
 
-        .card:hover video {
-            transform: scale(1.05);
-        }
-
-        .play-hint {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0.8);
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(8px);
-            width: 60px; height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 3;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .card:hover .play-hint {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        /* Info de la tarjeta */
         .card-info {
             padding: 20px;
             background: var(--surface);
@@ -243,7 +205,6 @@
             display: block;
         }
 
-        /* Botón de Acción */
         .btn-action {
             display: flex;
             align-items: center;
@@ -267,7 +228,6 @@
             box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
         }
 
-        /* Loader */
         #loader {
             grid-column: 1 / -1;
             text-align: center;
@@ -292,7 +252,6 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-        /* Responsive */
         @media (max-width: 768px) {
             nav { padding: 0 20px; }
             header { padding: 40px 20px; }
@@ -304,7 +263,7 @@
     <div class="mesh-bg"></div>
     
     <nav>
-        <div style="font-weight: 800; font-size: 1.2rem; letter-spacing: -1px;">DOMTECH</div>
+        <div style="font-weight: 800; font-size: 1.2rem; letter-spacing: -1px;">DOMTECH.</div>
         <div class="status-pill">
             <div class="status-dot"></div>
             <span>REPLAY CLOUD LIVE</span>
@@ -314,13 +273,11 @@
     <header>
         <span class="badge">Performance Analysis</span>
         <h1><span>Domtech Replay</span><span class="brand-dot">.</span></h1>
-        <p class="subtitle">Accede a la biblioteca de jugadas de Club Colinas. Analiza cada jugada o revive tus mejores momentos.</p>
+        <p class="subtitle">Archivo de videos Club Colinas. Analiza cada jugada o revive tus mejores momentos.</p>
     </header>
 
     <div class="container">
-        <!-- El id "galeria" se mantiene para compatibilidad con tu script.js -->
         <div id="galeria" class="grid">
-            <!-- El id "loader" se mantiene para compatibilidad -->
             <div id="loader">
                 <div class="loading-animation"></div>
                 SINCRONIZANDO ARCHIVOS...
@@ -328,40 +285,9 @@
         </div>
     </div>
 
-    <!-- 
-        Nota: He añadido iconos de Lucide para que, si tu script genera botones, 
-        puedas usarlos. Solo tienes que llamar a lucide.createIcons() al terminar la carga.
-    -->
     <script>
-        // Inicialización de iconos (si los usas en el DOM estático)
+        // Inicializa iconos estáticos si existieran
         lucide.createIcons();
-
-        /* EJEMPLO DE CÓMO DEBERÍA GENERAR TU SCRIPT.JS LAS TARJETAS 
-           PARA APROVECHAR EL NUEVO DISEÑO (Manteniendo la lógica):
-
-           const card = document.createElement('div');
-           card.className = 'card';
-           card.innerHTML = `
-                <div class="video-wrapper">
-                    <div class="play-hint"><i data-lucide="play" fill="white"></i></div>
-                    <div class="video-overlay"></div>
-                    <video src="${videoUrl}" preload="metadata" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
-                </div>
-                <div class="card-info">
-                    <div class="card-meta">
-                        <span class="label">REPLAY HD</span>
-                        <div style="color: var(--text-dim); font-size: 0.7rem;"><i data-lucide="clock" style="width:12px; vertical-align:middle"></i> 15s</div>
-                    </div>
-                    <span class="date-text">${nombreDelArchivoODiseño}</span>
-                    <a href="${videoUrl}" download class="btn-action">
-                        <i data-lucide="download" style="width:16px"></i>
-                        DESCARGAR ANÁLISIS
-                    </a>
-                </div>
-           `;
-           galeria.appendChild(card);
-           lucide.createIcons();
-        */
     </script>
     <script src="script.js"></script>
 </body>
