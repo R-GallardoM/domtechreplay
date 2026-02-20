@@ -3,23 +3,24 @@ const SUPABASE_URL = "https://gxgqgqcwgsmsxlnxsrcj.supabase.co";
 const SUPABASE_KEY = "sb_publishable_P7eGeU0cO6luraeKLmExDQ_Lb9OXOOT";
 const R2_PUBLIC_URL = "https://pub-30d153c22f29479a9e01afad5b2ed5f9.r2.dev"; 
 
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Usamos 'db' para evitar el SyntaxError
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 async function cargarVideos() {
     const galeria = document.getElementById('galeria');
     
-    // Obtenemos los clips de Supabase
-    const { data, error } = await supabase
+    const { data, error } = await db
         .from('clips')
         .select('*')
         .order('created_at', { ascending: false });
 
     if (error) {
+        console.error("Error de Supabase:", error);
         galeria.innerHTML = "<p>Hubo un error al conectar con la base de datos.</p>";
         return;
     }
 
-    if (data.length === 0) {
+    if (!data || data.length === 0) {
         galeria.innerHTML = "<p>Aún no hay jugadas grabadas. ¡Ve a la cancha y dispara una!</p>";
         return;
     }
