@@ -55,7 +55,7 @@ async function cargarVideos() {
                 <span class="date-text">${fechaFormateada}</span>
                 <a href="${videoUrl}" download="${clip.nombre}" class="btn-action">
                     <i data-lucide="download" style="width:16px"></i>
-                    DESCARGAR VIDEO
+                    DESCARGAR
                 </a>
             </div>
         `;
@@ -66,4 +66,5 @@ async function cargarVideos() {
 }
 
 cargarVideos();
+
 
